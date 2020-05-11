@@ -66,6 +66,8 @@ void Tick()
 	switch(state)
 	{
 		case START:
+			i = 0;
+			tmp = 0;
 			LCD_Cursor(1);
 			LCD_WriteData('0');
 			state = INIT;
@@ -93,10 +95,12 @@ void Tick()
 		case WAIT_HOLD1:
 			if(butt == 0x01)
 			{
-                        	if(tmp < 9)
+                        	if(i >= 10 && tmp < 9)
                         	{
                                 	tmp++;
+					i = 0;
                        		}
+				i++;
                 	        LCD_Cursor(1);
         	                LCD_WriteData(tmp + '0');
 	                        
@@ -111,10 +115,12 @@ void Tick()
 		case WAIT_HOLD2:
 			if(butt == 0x02) 
 			{
-                        	if(tmp > 0)
+                        	if(i >= 10 && tmp > 0)
                         	{
                         	        tmp--;
+					i = 0;
                 	        }
+				i++;
         	                LCD_Cursor(1);
 	                        LCD_WriteData(tmp + '0');
 
@@ -185,7 +191,7 @@ int main(void) {
 	DDRD = 0xFF; PORTD = 0x00;
 
 	LCD_init();
-	TimerSet(1000);
+	TimerSet(100);
 	TimerOn();
 
 //	LCD_DisplayString(1, "Hello World");
